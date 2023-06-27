@@ -21,7 +21,7 @@ task buildImage(type: Exec) {
 }
 task runDocker(type: Exec){
   dependsOn buildImage
-  commandLine 'docker', 'run', '-p', '8080:8080', '-t', 'petclinic', 'petclinic:latest'
+  commandLine 'docker', 'run', '-d', '-p', '8080:8080', '--name', 'petclinic', 'petclinic:latest'
 }
 task pushDockerImage(type: Exec){
   commandLine 'docker', 'push', 'patry77/petclinic-test:latest'
