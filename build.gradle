@@ -36,8 +36,13 @@ dependencies {
   runtimeOnly 'org.postgresql:postgresql'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+  testImplementation 'org.testcontainers:testcontainers'
+  testImplementation 'org.testcontainers:postgresql'
+  testImplementation 'org.testcontainers:mysql'
+  testImplementation "org.testcontainers:junit-jupiter"
+  testImplementation 'org.postgresql:postgresql'
 }
-
 tasks.named('test') {
   useJUnitPlatform()
 }
