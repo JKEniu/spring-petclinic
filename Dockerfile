@@ -1,4 +1,3 @@
-
 FROM gradle:latest AS builder
 COPY . /app
 WORKDIR /app
