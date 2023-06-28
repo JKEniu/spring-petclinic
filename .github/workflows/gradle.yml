@@ -20,7 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
       - name: Build and tag Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_LOGIN }}/petclinic-test:latest .
@@ -30,4 +31,4 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/m
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/petclinic-test
