@@ -25,7 +25,7 @@ jobs:
       - name: Build and tag Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_LOGIN }}/petclinic-test:latest .
-          docker tag ${{ secrets.DOCKER_USERNAME }}/petclinic-test:latest ${{ secrets.DOCKER_USERNAME }}/petclinic-test:latest
+          docker tag petclinic-test:latest ${{ secrets.DOCKER_USERNAME }}/petclinic-test:latest
 
       - name: Log in to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
