@@ -1,5 +1,7 @@
 FROM gradle:latest AS builder
-COPY . /app
+COPY /src /app/src
+COPY /gradle /app/gradle
+COPY build.gradle gradlew settings.gradle /app
 WORKDIR /app
 RUN ./gradlew clean build
 
