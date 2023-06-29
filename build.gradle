@@ -18,6 +18,7 @@ repositories {
 }
 task buildImage(type: Exec) {
   commandLine 'docker', 'build', '-t', 'petclinic:latest', '.'
+  commandLine 'docker' 'tag' 'petclinic-test:latest' 'patry77/petclinic-test:latest'
 }
 task runDocker(type: Exec){
   dependsOn buildImage
