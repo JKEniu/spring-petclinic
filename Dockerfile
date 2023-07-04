@@ -6,7 +6,7 @@ WORKDIR /app
 RUN ./gradlew clean build
 
 
-FROM openjdk:19-jre-slim
+FROM eclipse-temurin:17-jre-alpine
 COPY --from=builder /app/build/libs/spring-petclinic-3.1.0.jar /app/app.jar
 WORKDIR /app
 
