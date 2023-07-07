@@ -25,5 +25,7 @@ jobs:
         with:
           java-version: '19'
           distribution: 'temurin'
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
       - name: Run gradle task to build docker image, push it and run.
         run: ./gradlew runDocker -PdockerHubLogin=${{ secrets.DOCKER_HUB_LOGIN }} -PdockerHubPass=${{ secrets.DOCKER_HUB_PASS }}
