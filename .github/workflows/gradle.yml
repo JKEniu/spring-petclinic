@@ -26,4 +26,4 @@ jobs:
           java-version: '19'
           distribution: 'temurin'
       - name: Run gradle task to build docker image, push it and run.
-        run: gradlew runDocker -PdockerHubLogin={{ secrets.DOCKER_HUB_LOGIN }} -PdockerHubPass=${{ secrets.DOCKER_HUB_PASS }}
+        run: ./gradlew runDocker -PdockerHubLogin={{ secrets.DOCKER_HUB_LOGIN }} -PdockerHubPass=${{ secrets.DOCKER_HUB_PASS }}
