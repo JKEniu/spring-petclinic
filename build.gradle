@@ -20,12 +20,18 @@ repositories {
   mavenCentral()
 }
 task buildImage(type: Exec) {
-  commandLine 'docker', 'build', '-t', 'petclinic:latest', '.'
+  commandLine 'docker', 'build', '-t', 'petclinic-test:latest', '.'
 }
-task pushDockerImage(type: Exec){
+task tagDockerImage(type: Exec){
   dependsOn buildImage
   commandLine 'docker', 'tag', 'petclinic-test:latest', "${project.getProperty('dockerHubLogin')}/petclinic-test:latest"
+}
+task loginIntoDockerHub(type: Exec){
+  dependsOn tagDockerImage
   commandLine 'docker', 'login', '-u', "${project.getProperty('dockerHubLogin')}", '-p', "${project.getProperty('dockerHubPass')}"
+}
+task pushDockerImage(type: Exec){
+  dependsOn loginIntoDockerHub
   commandLine 'docker', 'push', "${project.getProperty('dockerHubLogin')}/petclinic-test:latest"
 }
 task runDocker(type: Exec){
