@@ -36,7 +36,7 @@ task pushDockerImage(type: Exec){
 }
 task runDocker(type: Exec){
   dependsOn pushDockerImage
-  commandLine 'docker', 'run', '-d', '-p', '8080:8080', '--name', 'petclinic', 'petclinic:latest'
+  commandLine 'docker', 'run', '-d', '-p', '8080:8080', '--name', 'petclinic', 'petclinic-test:latest'
 }
 
 ext.webjarsFontawesomeVersion = "4.7.0"
