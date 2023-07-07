@@ -20,15 +20,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v1
-      - name: Build and tag Docker image
-        run: |
-          docker build -t petclinic-test:latest .
-          docker tag petclinic-test:latest ${{ secrets.DOCKER_HUB_LOGIN }}/petclinic-test:latest
-
-      - name: Log in to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_HUB_LOGIN }} -p ${{ secrets.DOCKER_HUB_PASS }}
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_HUB_LOGIN }}/petclinic-test
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+      - name: Run gradle task to build docker image, push it and run.
+        run: gradlew runDocker -PdockerHubLogin={{ secrets.DOCKER_HUB_LOGIN }} -PdockerHubPass=${{ secrets.DOCKER_HUB_PASS }}
