@@ -21,11 +21,11 @@ repositories {
 }
 task buildImage(type: Exec) {
   commandLine 'docker', 'build', '-t', 'petclinic:latest', '.'
-  commandLine 'docker', 'tag', 'petclinic-test:latest', '${dockerHubLogin}/petclinic-test:latest'
+  commandLine 'docker', 'tag', 'petclinic-test:latest', "${project.getProperty('dockerHubLogin')}/petclinic-test:latest"
 }
 task pushDockerImage(type: Exec){
-  commandLine 'docker', 'login', '-u', '${dockerHubLogin}', '-p', '${dockerHubPass}'
-  commandLine 'docker', 'push', '${dockerHubLogin}/petclinic-test:latest'
+  commandLine 'docker', 'login', '-u', "${project.getProperty('dockerHubLogin')}", '-p', "${project.getProperty('dockerHubPass')}"
+  commandLine 'docker', 'push', "${project.getProperty('dockerHubLogin')}/petclinic-test:latest"
 }
 task runDocker(type: Exec){
   dependsOn buildImage
