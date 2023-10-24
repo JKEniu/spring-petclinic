@@ -9,16 +9,6 @@ pipeline {
         }
         
         
-        stage('Set up Docker') {
-            steps {
-                script {
-                    def dockerTool = tool name: 'Docker', type: 'org.jenkinsci.plugins.docker.commons.tools.DockerTool'
-                    env.PATH = "${dockerTool}:${env.PATH}"
-                    sh 'docker --version'
-                }
-            }
-        }
-        
         stage('Build docker image') {
             steps {
                 script {
