@@ -8,15 +8,6 @@ pipeline {
             }
         }
         
-        stage('Set up JDK') {
-            steps {
-                script {
-                    def jdkTool = tool name: 'JDK 19', type: 'hudson.model.JDK$Installations'
-                    env.JAVA_HOME = "${jdkTool}/"
-                    sh "${jdkTool}/bin/java -version"
-                }
-            }
-        }
         
         stage('Set up Docker') {
             steps {
@@ -31,7 +22,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 script {
-                    sh "./gradlew buildDockerImage"                    
+                    sh "./gradlew runDocker"                    
                     }
                 }
             }

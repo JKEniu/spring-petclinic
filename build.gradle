@@ -22,8 +22,12 @@ repositories {
 task buildImage(type: Exec) {
   commandLine 'docker', 'build', '-t', 'petclinic-test:latest', '.'
 }
-task tagDockerImage(type: Exec){
+task runDocker(type: Exec){
   dependsOn buildImage
+  commandLine 'docker', 'run', '-d', '-p', '8080:8080', '--name', 'petclinic', 'petclinic-test:latest'
+}
+task tagDockerImage(type: Exec){
+  dependsOn runDocker
   commandLine 'docker', 'tag', 'petclinic-test:latest', "${project.getProperty('dockerHubLogin')}/petclinic-test:latest"
 }
 task loginIntoDockerHub(type: Exec){
@@ -34,10 +38,7 @@ task pushDockerImage(type: Exec){
   dependsOn loginIntoDockerHub
   commandLine 'docker', 'push', "${project.getProperty('dockerHubLogin')}/petclinic-test:latest"
 }
-task runDocker(type: Exec){
-  dependsOn pushDockerImage
-  commandLine 'docker', 'run', '-d', '-p', '8080:8080', '--name', 'petclinic', 'petclinic-test:latest'
-}
+
 
 ext.webjarsFontawesomeVersion = "4.7.0"
 ext.webjarsBootstrapVersion = "5.2.3"
