@@ -29,6 +29,7 @@ pipeline {
                     sh "docker push localhost:8082/repository/spring-petclinic/petclinic-test:latest"
                     }
                 }
+            }
     }
         post{
             always {
