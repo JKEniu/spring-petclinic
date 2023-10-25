@@ -28,15 +28,15 @@ task runDocker(type: Exec){
 }
 task tagDockerImage(type: Exec){
   dependsOn runDocker
-  commandLine 'docker', 'tag', 'petclinic-test:latest', "${project.getProperty('dockerHubLogin')}/petclinic-test:latest"
+  commandLine 'docker', 'tag', 'petclinic-test:latest', "localhost:8083/repository/spring-petclinic/petclinic-test:latest"
 }
-task loginIntoDockerHub(type: Exec){
+task loginIntoNexus(type: Exec){
   dependsOn tagDockerImage
-  commandLine 'docker', 'login', '-u', "${project.getProperty('dockerHubLogin')}", '-p', "${project.getProperty('dockerHubPass')}"
+  commandLine 'docker', 'login', 'localhost:8083,', '-u', "admin", '-p', "test123"
 }
 task pushDockerImage(type: Exec){
   dependsOn loginIntoDockerHub
-  commandLine 'docker', 'push', "${project.getProperty('dockerHubLogin')}/petclinic-test:latest"
+  commandLine 'docker', 'push', "localhost:8083/repository/spring-petclinic/petclinic-test:latest"
 }
 
 

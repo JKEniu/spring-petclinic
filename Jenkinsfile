@@ -12,7 +12,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 script {
-                    sh "./gradlew runDocker"                    
+                    sh "./gradlew pushDockerImage"                    
                     }
                 }
             }
