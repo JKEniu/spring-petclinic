@@ -35,7 +35,7 @@ task loginIntoNexus(type: Exec){
   commandLine 'docker', 'login', 'localhost:8082,', '-u', "admin", '-p', "test123"
 }
 task pushDockerImage(type: Exec){
-  dependsOn loginIntoDockerHub
+  dependsOn loginIntoNexus
   commandLine 'docker', 'push', "localhost:8082/repository/spring-petclinic/petclinic-test:latest"
 }
 
