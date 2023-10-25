@@ -16,6 +16,13 @@ pipeline {
                     }
                 }
             }
+        stage('Tag docker image') {
+            steps {
+                script {
+                    sh "docker tag petclinic-test:latest localhost:8082/repository/spring-petclinic/petclinic-test:latest"
+                    }
+                }
+            }
         stage('Login into Nexus') {
             steps {
                 script {
