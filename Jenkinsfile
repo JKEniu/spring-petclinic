@@ -12,10 +12,23 @@ pipeline {
         stage('Build docker image') {
             steps {
                 script {
-                    sh "./gradlew pushDockerImage"                    
+                    sh "./gradlew runDocker"                    
                     }
                 }
             }
+        stage('Login into Nexus') {
+            steps {
+                script {
+                    sh "docker login localhost:8082 -u admin -p test123"
+                    }
+                }
+            }
+        stage('Push docker image') {
+            steps {
+                script {
+                    sh "docker push localhost:8082/repository/spring-petclinic/petclinic-test:latest"
+                    }
+                }
     }
         post{
             always {

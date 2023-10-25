@@ -32,7 +32,7 @@ task tagDockerImage(type: Exec){
 }
 task loginIntoNexus(type: Exec){
   dependsOn tagDockerImage
-  commandLine 'docker', 'login', 'http://localhost:8082,', '-u', "admin", '-p', "test123"
+  commandLine 'docker', 'login', 'localhost:8082,', '-u', "admin", '-p', "test123"
 }
 task pushDockerImage(type: Exec){
   dependsOn loginIntoNexus
