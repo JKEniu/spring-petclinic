@@ -14,7 +14,7 @@ scmVersion {
         type.set("git")
         directory.set(project.rootDir)
         remote.set("origin")
-        customKey.set("test") // Your GitHub username
+        // customKey.set("test") // Your GitHub username
         customKeyPassword.set("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") // Your GitHub personal access token
 
     }
