@@ -14,8 +14,8 @@ scmVersion {
         type.set("git")
         directory.set(project.rootDir)
         remote.set("origin")
-        release.customUsername.set("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") // Your GitHub username
-        // customKe.set("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") // Your GitHub personal access token
+        customUsername.set("patry77") // Your GitHub username
+        customPassword.set("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") // Your GitHub personal access token
 
     }
     ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
