@@ -11,9 +11,6 @@ plugins {
 scmVersion {
 
     repository {
-        type.set("git")
-        directory.set(project.rootDir)
-        remote.set("origin")
         customUsername.set("patry77") // Your GitHub username
         customPassword.set("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") // Your GitHub personal access token
 
