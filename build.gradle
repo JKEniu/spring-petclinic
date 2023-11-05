@@ -18,10 +18,6 @@ scmVersion {
         customPassword.set("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") // Your GitHub personal access token
 
     }
-    release {
-      customUsername='patry77'
-      customPassword='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'
-    }
     ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
      useHighestVersion.set(true)
 
