@@ -9,12 +9,6 @@ plugins {
 // import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 scmVersion {
-
-    repository {
-        customUsername.set("patry77") // Your GitHub username
-        customPassword.set("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") // Your GitHub personal access token
-
-    }
     ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
      useHighestVersion.set(true)
 
