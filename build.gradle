@@ -12,7 +12,7 @@ scmVersion {
 
     repository {
         customUsername.set("patry77") // Your GitHub username
-        customPassword.set("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") // Your GitHub personal access token
+        customPassword.set("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") // Your GitHub personal access token
 
     }
     ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
