@@ -7,6 +7,21 @@ plugins {
   // id 'com.bmuschko.docker-remote-api' version '9.3.1'
 }
 // import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+scmVersion {
+
+    repository {
+        type.set("git")
+        directory.set(project.rootDir)
+        remote.set("origin")
+    }
+    ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
+     useHighestVersion.set(true)
+
+}
+
+
+
 project.version = scmVersion.version
 
 ext {
