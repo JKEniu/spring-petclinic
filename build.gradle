@@ -14,6 +14,9 @@ scmVersion {
         type.set("git")
         directory.set(project.rootDir)
         remote.set("origin")
+        customKey.set("patry77") // Your GitHub username
+        customKeyPassword.set("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") // Your GitHub personal access token
+
     }
     ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
      useHighestVersion.set(true)
