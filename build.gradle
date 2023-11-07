@@ -12,8 +12,8 @@ plugins {
 project.version = scmVersion.version
 
 ext {
-    dockerHubPass = project.hasProperty('githubLogin') ? project.getProperty('githubLogin') : null
-    dockerHubLogin = project.hasProperty('githubKey') ? project.getProperty('githubKey') : null
+    githubLogin = project.hasProperty('githubLogin') ? project.getProperty('githubLogin') : null
+    githubKey = project.hasProperty('githubKey') ? project.getProperty('githubKey') : null
 }
 scmVersion {
 
