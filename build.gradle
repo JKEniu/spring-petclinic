@@ -15,17 +15,14 @@ ext {
     githubLogin = project.hasProperty('githubLogin') ? project.getProperty('githubLogin') : null
     githubKey = project.hasProperty('githubKey') ? project.getProperty('githubKey') : null
 }
+
 scmVersion {
-
-    repository {
-        customUsername.set("patry77")
-        customPassword.set("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")
-
-    }
-    ignoreUncommittedChanges.set(false)
-    useHighestVersion.set(true)
+    ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
+     useHighestVersion.set(true)
 
 }
+
+
 
 apply plugin: 'java'
 group = 'org.springframework.samples'
