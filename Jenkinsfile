@@ -9,18 +9,17 @@ pipeline {
         }
         
         stage('Get Project Version') {
-                    steps {
-                        script {
-                            def gradleOutput = sh(script: './gradlew cV', returnStdout: true).trim()
+            steps {
+                script {
 
-                            def projectVersion = gradleOutput.replaceAll("Project version: ", "")
-
-                            env.PROJECT_VERSION = projectVersion
-
-                            echo "Project version is: $PROJECT_VERSION"
-                        }
-                    }
-                }        
+                    def gradleOutput = sh(script: './gradlew cV', returnStdout: true).trim()
+                    def versionLine = gradleOutput.readLines().find { it.startsWith('Project version') }
+                    def projectVersion = versionLine - 'Project version: '
+                    env.PROJECT_VERSION = projectVersion.trim()
+                    echo "Project version is: $PROJECT_VERSION"
+                }
+            }
+        }      
         stage('Build docker image') {
             steps {
                 script {
