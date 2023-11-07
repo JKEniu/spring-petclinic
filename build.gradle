@@ -8,11 +8,20 @@ plugins {
 }
 // import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
+
+
+
+project.version = scmVersion.version
+
+ext {
+    dockerHubPass = project.hasProperty('githubLogin') ? project.getProperty('githubLogin') : null
+    dockerHubLogin = project.hasProperty('githubKey') ? project.getProperty('githubKey') : null
+}
 scmVersion {
 
     repository {
-        customUsername.set("patry77") // Your GitHub username
-        customPassword.set("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") // Your GitHub personal access token
+        customUsername.set("${project.getProperty('githubLogin')}") // Your GitHub username
+        customPassword.set("${project.getProperty('githubKey')}") // Your GitHub personal access token
 
     }
     ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
@@ -20,14 +29,6 @@ scmVersion {
 
 }
 
-
-
-project.version = scmVersion.version
-
-ext {
-    dockerHubPass = project.hasProperty('dockerHubPass') ? project.getProperty('dockerHubPass') : null
-    dockerHubLogin = project.hasProperty('dockerHubLogin') ? project.getProperty('dockerHubLogin') : null
-}
 apply plugin: 'java'
 group = 'org.springframework.samples'
 version = '3.1.0'
