@@ -20,11 +20,11 @@ ext {
 scmVersion {
 
     repository {
-        customUsername.set("${project.getProperty('githubLogin')}") // Your GitHub username
-        customPassword.set("${project.getProperty('githubKey')}") // Your GitHub personal access token
+        customUsername.set("${project.getProperty('githubLogin')}")
+        customPassword.set("${project.getProperty('githubKey')}")
 
     }
-    ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
+    ignoreUncommittedChanges.set(false)
      useHighestVersion.set(true)
 
 }
