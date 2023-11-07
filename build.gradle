@@ -23,7 +23,7 @@ scmVersion {
 
     }
     ignoreUncommittedChanges.set(false)
-     useHighestVersion.set(true)
+    useHighestVersion.set(true)
 
 }
 
