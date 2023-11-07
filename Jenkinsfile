@@ -16,7 +16,7 @@ pipeline {
                         def gradleOutput = sh(script: './gradlew cV', returnStdout: true).trim()
                         def versionLine = gradleOutput.readLines().find { it.startsWith('Project version') }
                         def projectVersion = versionLine - 'Project version: '
-                        def projectVersion = gradleOutput.replaceAll("Project version: ", "")
+                        projectVersion = gradleOutput.replaceAll("Project version: ", "")
                         env.PROJECT_VERSION = projectVersion.trim()
                         echo "Project version is: $PROJECT_VERSION"
                     }
