@@ -18,7 +18,7 @@ ext {
 scmVersion {
 
     repository {
-        customUsername.set("patry77")
+        customUsername.set("tak")
         customPassword.set("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")
 
     }
