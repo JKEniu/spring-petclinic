@@ -11,8 +11,8 @@ pipeline {
         stage('Get Project Version') {
             steps {
                 script {
-
-                    sh "./gradlew release -Prelease.customUsername='patry77' -Prelease.customPassword='test'"
+                    withCredentials([usernamePassword(credentialsId: 'githubToken', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh "./gradlew release -Prelease.customUsername='$USERNAME' -Prelease.customPassword='$PASSWORD'"
                     def gradleOutput = sh(script: './gradlew cV', returnStdout: true).trim()
                     def versionLine = gradleOutput.readLines().find { it.startsWith('Project version') }
                     def projectVersion = versionLine - 'Project version: '
