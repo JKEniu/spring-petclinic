@@ -11,11 +11,6 @@ plugins {
 
 project.version = scmVersion.version
 
-ext {
-    githubLogin = project.hasProperty('githubLogin') ? project.getProperty('githubLogin') : null
-    githubKey = project.hasProperty('githubKey') ? project.getProperty('githubKey') : null
-}
-
 scmVersion {
     ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
      useHighestVersion.set(true)
