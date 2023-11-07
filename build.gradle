@@ -18,8 +18,8 @@ ext {
 scmVersion {
 
     repository {
-        customUsername.set("${project.getProperty('githubLogin')}")
-        customPassword.set("${project.getProperty('githubKey')}")
+        customUsername.set("patry77")
+        customPassword.set("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")
 
     }
     ignoreUncommittedChanges.set(false)
