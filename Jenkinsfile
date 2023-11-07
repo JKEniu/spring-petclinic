@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
 
-                    sh "./gradlew release -Prelease.customUsername='patry77' -Prelease.customPassword='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'"
+                    sh "./gradlew release -Prelease.customUsername='patry77' -Prelease.customPassword='test'"
                     def gradleOutput = sh(script: './gradlew cV', returnStdout: true).trim()
                     def versionLine = gradleOutput.readLines().find { it.startsWith('Project version') }
                     def projectVersion = versionLine - 'Project version: '
