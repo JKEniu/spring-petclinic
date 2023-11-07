@@ -16,6 +16,7 @@ pipeline {
                         def gradleOutput = sh(script: './gradlew cV', returnStdout: true).trim()
                         def versionLine = gradleOutput.readLines().find { it.startsWith('Project version') }
                         def projectVersion = versionLine - 'Project version: '
+                        def projectVersion = gradleOutput.replaceAll("Project version: ", "")
                         env.PROJECT_VERSION = projectVersion.trim()
                         echo "Project version is: $PROJECT_VERSION"
                     }
@@ -32,7 +33,7 @@ pipeline {
         stage('Tag docker image') {
             steps {
                 script {
-                    sh "docker tag petclinic-test:latest localhost:8082/repository/spring-petclinic/petclinic-test:latest"
+                    sh "docker tag petclinic-test:latest localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"
                     }
                 }
             }
