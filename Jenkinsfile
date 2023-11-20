@@ -48,6 +48,7 @@ pipeline {
                     }
                 }
             }
+        }
 
         stage('Push docker image') {
             steps {
