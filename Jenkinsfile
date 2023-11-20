@@ -48,7 +48,7 @@ pipeline {
                     }
                 }
             }
-            
+
         stage('Push docker image') {
             steps {
                 script {
@@ -56,14 +56,14 @@ pipeline {
                     }
                 }
             }
-        stage('Update docker image on GCP instance group') {
-            steps {
-                script {
-                    sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
-                    sh "for i in $(gcloud compute instances list --filter NAME~"tfproject" --format="value(NAME)");do gcloud compute instances update-container $i --zone us-west4-a --container-image=localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION;done"
-                    }
-                }
-            }
+        // stage('Update docker image on GCP instance group') {
+        //     steps {
+        //         script {
+        //             sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
+        //             sh "for i in $(gcloud compute instances list --filter NAME~"tfproject" --format="value(NAME)");do gcloud compute instances update-container $i --zone us-west4-a --container-image=localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION;done"
+        //             }
+        //         }
+        //     }
     }
 
         post{
