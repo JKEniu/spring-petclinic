@@ -1,6 +1,10 @@
 pipeline {
     agent any
-    
+
+    triggers {
+        githubPush()
+    }   
+
     stages {
         stage('Checkout') {
             steps {
@@ -39,7 +43,8 @@ pipeline {
         stage('Login into Nexus') {
             steps {
                 script {
-                    sh "docker login localhost:8082 -u admin -p test123"
+                    withCredentials([usernamePassword(credentialsId: 'nexusCreds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                        sh "docker login localhost:8082 -u $USERNAME -p $PASSWORD"
                     }
                 }
             }
@@ -47,6 +52,14 @@ pipeline {
             steps {
                 script {
                     sh "docker push localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"
+                    }
+                }
+            }
+        stage('Update docker image on GCP instance group') {
+            steps {
+                script {
+                    sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
+                    sh "for i in $(gcloud compute instances list --filter NAME~"tfproject" --format="value(NAME)");do gcloud compute instances update-container $i --zone us-west4-a --container-image=localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION;done"
                     }
                 }
             }
@@ -62,3 +75,4 @@ pipeline {
                 }
             }
         }
+}
