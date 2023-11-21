@@ -25,6 +25,14 @@ pipeline {
                     }
                 }
             }
+        }
+        stage('Get VM IP'){
+            steps{
+                script{
+                    def vmIP = sh(script: "curl ifconfig.me", returnStdout: true)
+                    env.VM_IP = vmIP
+                }
+            }
         }      
         stage('Build docker image') {
             steps {
@@ -36,7 +44,7 @@ pipeline {
         stage('Tag docker image') {
             steps {
                 script {
-                    sh "docker tag petclinic-test:latest localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"
+                    sh "docker tag petclinic-test:latest $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"
                     }
                 }
             }
@@ -44,7 +52,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'nexusCreds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                        sh "docker login localhost:8082 -u $USERNAME -p $PASSWORD"
+                        sh "docker login $VM_IP:8082 -u $USERNAME -p $PASSWORD"
                     }
                 }
             }
@@ -53,7 +61,7 @@ pipeline {
         stage('Push docker image') {
             steps {
                 script {
-                    sh "docker push localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"
+                    sh "docker push $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"
                     }
                 }
             }
@@ -62,7 +70,7 @@ pipeline {
                 script {
                         withCredentials([file(credentialsId: 'GCLOUD_CREDS', variable: 'GCLOUD_CREDS')]) {
                          sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
-                         sh "for i in \$(gcloud compute instances list --filter NAME~\"capstone-loadbalancer\" --format=\"value(NAME)\");do gcloud compute instances update-container \$i --zone europe-central2-a --container-image=localhost:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION};done"
+                         sh "for i in \$(gcloud compute instances list --filter NAME~""capstone-loadbalancer"" --format=""value(NAME)"");do gcloud compute instances update-container \$i --zone europe-central2-a --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION};done"
                         }
                     }
                 }
