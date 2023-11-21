@@ -69,8 +69,20 @@ pipeline {
             steps {
                 script {
                         withCredentials([file(credentialsId: 'GCLOUD_CREDS', variable: 'GCLOUD_CREDS')]) {
-                         sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
-                        sh 'for i in $(gcloud compute instances list --filter "NAME~capstone-loadbalancer" --format="value(NAME)"); do gcloud compute instances update-container $i --zone europe-central2-a --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION}; done'
+                            sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
+                            sh '''
+                            INSTANCE_LIST=$(gcloud compute instances list --filter "NAME~capstone-loadbalancer" --format="value(NAME)" || echo "Error getting instance list")
+
+                            if [ -n "$INSTANCE_LIST" ]; then
+                                echo "Instance list: $INSTANCE_LIST"
+                                for i in $INSTANCE_LIST; do
+                                gcloud compute instances update-container $i --zone europe-central2-a --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} || echo "Error updating container for instance $i"
+                                done
+                            else
+                                echo "Error getting instance list. Exiting."
+                                exit 1
+                            fi
+                            '''
                         }
                     }
                 }
