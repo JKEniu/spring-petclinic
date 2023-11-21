@@ -52,7 +52,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'nexusCreds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                        sh "docker login localhost:8082 -u $USERNAME -p $PASSWORD"
+                        sh "docker login $VM_IP:8082 -u $USERNAME -p $PASSWORD"
                     }
                 }
             }
