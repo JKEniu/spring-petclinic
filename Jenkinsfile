@@ -82,7 +82,7 @@ pipeline {
                 script {
                     sh "docker stop petclinic"
                     sh "docker rm petclinic"
-                    sh "docker rmi localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"                 
+                    sh "docker rmi $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"                 
                     }
                 }
             }
