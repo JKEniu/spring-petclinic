@@ -3,7 +3,7 @@ COPY /src /app/src
 COPY /gradle /app/gradle
 COPY build.gradle gradlew settings.gradle /app/
 WORKDIR /app
-RUN ./gradlew bootRun -Dspring-boot.run.profiles=mysql -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8080'
+CMD ["./gradlew", "bootRun", "-Dspring-boot.run.profiles=mysql", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8080'""]
 
 
 FROM builder AS build
