@@ -62,7 +62,7 @@ pipeline {
                 script {
                         withCredentials([file(credentialsId: 'GCLOUD_CREDS', variable: 'GCLOUD_CREDS')]) {
                          sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
-                         sh "for i in $(gcloud compute instances list --filter NAME~"capstone-loadbalancer" --format="value(NAME)");do gcloud compute instances update-container $i --zone europe-central2-a --container-image=localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION;done"
+                         sh "for i in $(gcloud compute instances list --filter NAME~\"capstone-loadbalancer\" --format=\"value(NAME)\");do gcloud compute instances update-container $i --zone europe-central2-a --container-image=localhost:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION;done"
                         }
                     }
                 }
