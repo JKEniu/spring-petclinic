@@ -34,18 +34,7 @@ task runDocker(type: Exec){
   dependsOn buildImage
   commandLine 'docker', 'run', '-d', '-p', '8080:8080', '--name', 'petclinic', 'petclinic-test:latest'
 }
-task tagDockerImage(type: Exec){
-  dependsOn runDocker
-  commandLine 'docker', 'tag', 'petclinic-test:latest', "localhost:8082/repository/spring-petclinic/petclinic-test:latest"
-}
-task loginIntoNexus(type: Exec){
-  dependsOn tagDockerImage
-  commandLine 'docker', 'login', 'localhost:8082,', '-u', "admin", '-p', "test123"
-}
-task pushDockerImage(type: Exec){
-  dependsOn loginIntoNexus
-  commandLine 'docker', 'push', "localhost:8082/repository/spring-petclinic/petclinic-test:latest"
-}
+
 
 
 ext.webjarsFontawesomeVersion = "4.7.0"
