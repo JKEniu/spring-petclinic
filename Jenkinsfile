@@ -76,7 +76,7 @@ pipeline {
                             if [ -n "$INSTANCE_LIST" ]; then
                                 echo "Instance list: $INSTANCE_LIST"
                                 for i in $INSTANCE_LIST; do
-                                gcloud compute instances update-container "$i" --zone europe-central2-a --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} || echo "Error updating container for instance $i"
+                                gcloud compute instances update-container "$i" --zone us-central1-a --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} || echo "Error updating container for instance $i"
                                 done
                             else
                                 echo "Error getting instance list. Exiting."
