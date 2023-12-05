@@ -71,7 +71,7 @@ pipeline {
                         withCredentials([file(credentialsId: 'GCLOUD_CREDS', variable: 'GCLOUD_CREDS')]) {
                             sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
                             sh '''
-                            INSTANCE_LIST=$(gcloud compute instances list --filter "NAME~capstone-loadbalancer" --format="value(NAME)" || echo "Error getting instance list")
+                            INSTANCE_LIST=$(gcloud compute instances list --filter "NAME~petclinic" --format="value(NAME)" || echo "Error getting instance list")
 
                             if [ -n "$INSTANCE_LIST" ]; then
                                 echo "Instance list: $INSTANCE_LIST"
@@ -92,9 +92,9 @@ pipeline {
         post{
             always {
                 script {
-                    sh "docker stop petclinic"
-                    sh "docker rm petclinic"
-                    sh "docker rmi $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"                 
+                        sh "docker stop petclinic"
+                        sh "docker rm petclinic"
+                        sh "docker rmi $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"                 
                     }
                 }
             }
