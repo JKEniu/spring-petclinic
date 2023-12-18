@@ -70,7 +70,7 @@ pipeline {
                 script {
                         withCredentials([file(credentialsId: 'GCLOUD_CREDS', variable: 'GCLOUD_CREDS')]) {
                             sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
-                            // sh "gcloud compute instance-templates delete petclinic-template --quiet"
+                            sh "gcloud compute instance-templates delete petclinic-template --quiet"
                             sh """
                             gcloud compute instance-templates create-with-container petclinic-template \
                             --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} \
