@@ -81,7 +81,7 @@ pipeline {
                             sh """
                             gcloud compute instance-templates create-with-container petclinic-template-${PROJECT_VERSIONGCP} \
                             --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} \
-                            --tags=http-server \
+                            --tags=allow-health-check \
                             --machine-type=e2-medium \
                             --container-env=MYSQL_USER=petclinic \
                             --container-env=MYSQL_PASSWORD=test123 \
