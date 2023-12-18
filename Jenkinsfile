@@ -90,7 +90,7 @@ pipeline {
                             --subnet=capstone-loadbalancer-subnetwork \
                             --region=us-central1 \
                             --metadata=startup-script='#!/bin/bash 
-echo { "insecure-registries": ["${VM_IP}:8082"] } | sudo tee /etc/docker/daemon.json
+echo { \"insecure-registries\": [\"${VM_IP}:8082\"] } | sudo tee /etc/docker/daemon.json
 sudo systemctl restart docker'
                             """
                             sh "gcloud compute instance-groups managed rolling-action start-update capstone-loadbalancer-group --version=template=petclinic-template-${PROJECT_VERSIONGCP} --zone us-central1-a"                     
