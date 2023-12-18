@@ -83,17 +83,14 @@ pipeline {
                             --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} \
                             --tags=allow-health-check \
                             --machine-type=e2-medium \
+                            --no-address \
                             --container-env=MYSQL_USER=petclinic \
                             --container-env=MYSQL_PASSWORD=test123 \
                             --container-env=spring.profiles.active=mysql \
                             --subnet=capstone-loadbalancer-subnetwork \
                             --region=us-central1 \
-                            --metadata=startup-script='#! /bin/bash
-                            echo {
-                            "insecure-registries": ["${VM_IP}:8082"]
-                            } | sudo tee /etc/docker/daemon.json
-                            sudo systemctl restart docker
-                            '
+                            --metadata=startup-script='#! /bin/bash echo { "insecure-registries": ["${VM_IP}:8082"] } | sudo tee /etc/docker/daemon.json
+sudo systemctl restart docker'
                             """
                             sh "gcloud compute instance-groups managed rolling-action start-update capstone-loadbalancer-group --version=template=petclinic-template-${PROJECT_VERSIONGCP} --zone us-central1-a"                     
                             // sh '''
