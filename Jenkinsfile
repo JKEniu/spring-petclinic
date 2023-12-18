@@ -81,7 +81,7 @@ pipeline {
                             --container-env=MYSQL_PASSWORD=test123 \
                             --container-env=spring.profiles.active=mysql \
                             --subnet=capstone-loadbalancer-subnetwork \
-                            --region=us-central1
+                            --region=us-central1 \
                             --metadata=google-monitoring-enabled=true \
                             --metadata=google-logging-enabled=true \
                             --metadata=startup-script='#! /bin/bash
