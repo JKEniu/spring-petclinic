@@ -75,7 +75,7 @@ pipeline {
                             --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} \
                             --tags=http-server \
                             --machine-type=e2-medium \
-                            --container-env=MYSQL_URL=jdbc:mysql://petclinic
+                            --container-env=MYSQL_URL=jdbc:mysql://petclinic \
                             --container-env=MYSQL_USER=petclinic \
                             --container-env=MYSQL_PASSWORD=test123 \
                             --container-env=spring.profiles.active=mysql \
