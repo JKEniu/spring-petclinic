@@ -89,7 +89,7 @@ pipeline {
                             sudo systemctl restart docker
                             '
                             """
-                            sh "gcloud compute instance-groups managed rolling-action replace capstone-loadbalancer-group --version=template=petclinic-template --zone us-central1-a"                     
+                            sh "gcloud compute instance-groups managed rolling-action start-update capstone-loadbalancer-group --version=template=petclinic-template --zone us-central1-a"                     
                             // sh '''
                             // INSTANCE_LIST=$(gcloud compute instances list --filter "NAME~petclinic" --format="value(NAME)" || echo "Error getting instance list")
 
