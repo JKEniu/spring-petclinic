@@ -81,7 +81,6 @@ pipeline {
                             --container-env=spring.profiles.active=mysql \
                             --subnet=capstone-loadbalancer-subnetwork \
                             --region=us-central1 \
-                            --no-address \
                             --metadata=startup-script='#! /bin/bash
                             echo {
                             "insecure-registries": ["${VM_IP}:8082"]
