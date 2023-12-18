@@ -65,14 +65,21 @@ pipeline {
                     }
                 }
             }
+        stage('Replace in project version dots to dashes') {
+            steps {
+                script {
+                    env.PROJECT_VERSIONGCP = env.PROJECT_VERSION.replace(".", "-")
+                    echo "Project version is: $PROJECT_VERSION"
+                    }
+                }
+            }
         stage('Update docker image on GCP instance group') {
             steps {
                 script {
                         withCredentials([file(credentialsId: 'GCLOUD_CREDS', variable: 'GCLOUD_CREDS')]) {
                             sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
-                            sh "gcloud compute instance-templates delete petclinic-template --quiet"
                             sh """
-                            gcloud compute instance-templates create-with-container petclinic-template \
+                            gcloud compute instance-templates create-with-container petclinic-template-${PROJECT_VERSIONGCP} \
                             --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} \
                             --tags=http-server \
                             --machine-type=e2-medium \
@@ -88,7 +95,7 @@ pipeline {
                             sudo systemctl restart docker
                             '
                             """
-                            sh "gcloud compute instance-groups managed rolling-action start-update capstone-loadbalancer-group --version=template=petclinic-template --zone us-central1-a"                     
+                            sh "gcloud compute instance-groups managed rolling-action start-update capstone-loadbalancer-group --version=template=petclinic-template-${PROJECT_VERSIONGCP} --zone us-central1-a"                     
                             // sh '''
                             // INSTANCE_LIST=$(gcloud compute instances list --filter "NAME~petclinic" --format="value(NAME)" || echo "Error getting instance list")
 
