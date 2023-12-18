@@ -70,7 +70,7 @@ pipeline {
                 script {
                         withCredentials([file(credentialsId: 'GCLOUD_CREDS', variable: 'GCLOUD_CREDS')]) {
                             sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
-                          //  sh "gcloud compute instance-templates delete petclinic-template --quiet"
+                            sh "gcloud compute instance-templates delete petclinic-template --quiet"
                             sh """
                             gcloud compute instance-templates create-with-container petclinic-template \
                             --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} \
@@ -89,7 +89,7 @@ pipeline {
                             sudo systemctl restart docker
                             '
                             """
-                            sh "gcloud compute instance-groups managed rolling-action replace capstone-loadbalancer-group --version template=petclinic-template --zone us-central1-a"                     
+                            sh "gcloud compute instance-groups managed rolling-action replace capstone-loadbalancer-group --version=template=petclinic-template --zone us-central1-a"                     
                             // sh '''
                             // INSTANCE_LIST=$(gcloud compute instances list --filter "NAME~petclinic" --format="value(NAME)" || echo "Error getting instance list")
 
