@@ -5,7 +5,6 @@ pipeline {
         stage("Build docker image"){
             steps{
                 sh "docker build -t spring-petclinic -f DockerfileBuild . > logs.log"
-                recordIssues tool: consoleLog(), healthy: '', unHealthy: ''
             }
             post {
                 always {
