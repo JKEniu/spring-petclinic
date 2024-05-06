@@ -12,7 +12,7 @@ plugins {
 project.version = scmVersion.version
 
 scmVersion {
-    ignoreUncommittedChanges.set(false) // Decide if uncommitted changes should force a version bump
+    ignoreUncommittedChanges.set(false) 
      useHighestVersion.set(true)
 
 }
