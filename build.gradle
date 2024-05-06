@@ -28,7 +28,7 @@ repositories {
   mavenCentral()
 }
 task buildImage(type: Exec) {
-  commandLine 'docker', 'build', '-t', 'petclinic-test:latest', '.'
+  commandLine 'docker', 'build', '-t', 'petclinic-test:latest', '-f', 'Dockerfile2',  '.'
 }
 task runDocker(type: Exec){
   dependsOn buildImage
