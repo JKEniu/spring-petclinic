@@ -1,4 +1,4 @@
-FROM gradle:latest AS builder
+FROM gradle:7.3-jdk17 AS builder
 COPY /src /app/src
 COPY /gradle /app/gradle
 COPY build.gradle gradlew settings.gradle /app/
