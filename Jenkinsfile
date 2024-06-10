@@ -28,10 +28,11 @@ pipeline {
                     """
                 }
             }
+        }
         stage('Tag docker image') {
             steps {
                 script {
-                    sh "docker tag petclinic-test:latest patry77/petclinic-test:$PROJECT_VERSION"
+                    sh "docker tag petclinic:latest jkeniu/petclinic:${env.BUILD_NUMBER}"
                     }
                 }
             }
@@ -48,32 +49,22 @@ pipeline {
         stage('Push docker image') {
             steps {
                 script {
-                    sh "docker push patry77/petclinic-test:$PROJECT_VERSION"
+                    sh "docker push jkeniu/petclinic:${env.BUILD_NUMBER}"
                     }
                 }
             }
         stage('Save docker image') {
-        steps {
-            script {
-                sh "docker save -o petclinic-test_${env.BUILD_NUMBER}.tar petclinic-test:latest"
-            }
-        }
-    }
-
-    stage('Archive docker image') {
-        steps {
-            archiveArtifacts artifacts: "petclinic-test_${env.BUILD_NUMBER}.tar", fingerprint: true
-        }
-    }
-    }
-
-        post{
-            always {
+            steps {
                 script {
-                        sh "docker stop petclinic"
-                        sh "docker rm petclinic"
-                        sh "docker rmi patry77/petclinic-test:$PROJECT_VERSION"                 
-                    }
+                    sh "docker save -o petclinic_${env.BUILD_NUMBER}.tar petclinic:latest"
                 }
             }
+        }    
+
+        stage('Archive docker image') {
+            steps {
+                archiveArtifacts artifacts: "petclinic_${env.BUILD_NUMBER}.tar", fingerprint: true
+            }
         }
+    }       
+}
