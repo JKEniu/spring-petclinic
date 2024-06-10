@@ -25,15 +25,7 @@ pipeline {
                     }
                 }
             }
-        }
-        stage('Get VM IP'){
-            steps{
-                script{
-                    def vmIP = sh(script: "curl ifconfig.me", returnStdout: true)
-                    env.VM_IP = vmIP
-                }
-            }
-        }      
+        }    
         stage('Build docker image') {
             steps {
                 script {
@@ -41,18 +33,27 @@ pipeline {
                     }
                 }
             }
+        stage("Test"){
+            steps{
+                script {
+                    sh """
+                        docker build -t test -f Dockerfile_T . > logs_test_${env.BUILD_NUMBER}.log 2>&1 || exit 1
+                        docker run --rm test > test_results_${env.BUILD_NUMBER}.log 2>&1 || exit 1
+                    """
+                }
+            }
         stage('Tag docker image') {
             steps {
                 script {
-                    sh "docker tag petclinic-test:latest $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"
+                    sh "docker tag petclinic-test:latest patry77/petclinic-test:$PROJECT_VERSION"
                     }
                 }
             }
-        stage('Login into Nexus') {
+        stage('Login into Docker Hub') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'nexusCreds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                        sh "docker login $VM_IP:8082 -u $USERNAME -p $PASSWORD"
+                        sh "docker login -u $USERNAME -p $PASSWORD"
                     }
                 }
             }
@@ -61,56 +62,23 @@ pipeline {
         stage('Push docker image') {
             steps {
                 script {
-                    sh "docker push $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"
+                    sh "docker push patry77/petclinic-test:$PROJECT_VERSION"
                     }
                 }
             }
-        stage('Replace in project version dots to dashes') {
-            steps {
-                script {
-                    env.PROJECT_VERSIONGCP = env.PROJECT_VERSION.replace(".", "-")
-                    echo "Project version is: $PROJECT_VERSION"
-                    }
-                }
+        stage('Save docker image') {
+        steps {
+            script {
+                sh "docker save -o petclinic-test_${env.BUILD_NUMBER}.tar petclinic-test:latest"
             }
-        stage('Update docker image on GCP instance group') {
-            steps {
-                script {
-                        withCredentials([file(credentialsId: 'GCLOUD_CREDS', variable: 'GCLOUD_CREDS')]) {
-                            sh "gcloud auth activate-service-account --key-file='$GCLOUD_CREDS'"
-                            sh """
-                            gcloud compute instance-templates create-with-container petclinic-template-${PROJECT_VERSIONGCP} \
-                            --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} \
-                            --tags=allow-health-check \
-                            --machine-type=e2-medium \
-                            --no-address \
-                            --container-env=MYSQL_USER=petclinic \
-                            --container-env=MYSQL_PASSWORD=test123 \
-                            --container-env=spring.profiles.active=mysql \
-                            --subnet=capstone-loadbalancer-subnetwork \
-                            --region=us-central1 \
-                            --metadata=startup-script="#!/bin/bash 
-echo '{ \\\"insecure-registries\\\": [\\\"${VM_IP}:8082\\\"] }' | sudo tee /etc/docker/daemon.json
-sudo systemctl restart docker"
-                            """
-                            sh "gcloud compute instance-groups managed rolling-action start-update capstone-loadbalancer-group --version=template=petclinic-template-${PROJECT_VERSIONGCP} --zone us-central1-a"                     
-                            // sh '''
-                            // INSTANCE_LIST=$(gcloud compute instances list --filter "NAME~petclinic" --format="value(NAME)" || echo "Error getting instance list")
+        }
+    }
 
-                            // if [ -n "$INSTANCE_LIST" ]; then
-                            //     echo "Instance list: $INSTANCE_LIST"
-                            //     for i in $INSTANCE_LIST; do
-                            //     gcloud compute instances update-container "$i" --zone us-central1-a --container-image=${VM_IP}:8082/repository/spring-petclinic/petclinic-test:${PROJECT_VERSION} || echo "Error updating container for instance $i"
-                            //     done
-                            // else
-                            //     echo "Error getting instance list. Exiting."
-                            //     exit 1
-                            // fi
-                            // '''
-                        }
-                    }
-                }
-            }
+    stage('Archive docker image') {
+        steps {
+            archiveArtifacts artifacts: "petclinic-test_${env.BUILD_NUMBER}.tar", fingerprint: true
+        }
+    }
     }
 
         post{
@@ -118,7 +86,7 @@ sudo systemctl restart docker"
                 script {
                         sh "docker stop petclinic"
                         sh "docker rm petclinic"
-                        sh "docker rmi $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"                 
+                        sh "docker rmi patry77/petclinic-test:$PROJECT_VERSION"                 
                     }
                 }
             }
