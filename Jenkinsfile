@@ -66,6 +66,6 @@ pipeline {
                         sh "docker rmi $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"                 
                     }
                 }
-            }
-        }
+              }
+    
 }
