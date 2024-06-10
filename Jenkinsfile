@@ -8,24 +8,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/patry77/spring-petclinic.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/JKEniu/spring-petclinic.git']]])
             }
         }
-        
-        stage('Get Project Version') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'githubToken', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                        sh "./gradlew release -Prelease.customUsername='$USERNAME' -Prelease.customPassword='$PASSWORD' -Prelease.disableChecks -Prelease.pushTagsOnly"
-                        def gradleOutput = sh(script: './gradlew cV', returnStdout: true).trim()
-                        def versionLine = gradleOutput.readLines().find { it.startsWith('Project version: ') }
-                        def projectVersion = versionLine - 'Project version: '
-                        env.PROJECT_VERSION = projectVersion.trim()
-                        echo "Project version is: $PROJECT_VERSION"
-                    }
-                }
-            }
-        }    
+            
         stage('Build docker image') {
             steps {
                 script {
