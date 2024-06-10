@@ -57,5 +57,15 @@ pipeline {
                 archiveArtifacts artifacts: "petclinic_${env.BUILD_NUMBER}.tar", fingerprint: true
             }
         }
-    }       
+    }    
+    post{
+            always {
+                script {
+                        sh "docker stop petclinic"
+                        sh "docker rm petclinic"
+                        sh "docker rmi $VM_IP:8082/repository/spring-petclinic/petclinic-test:$PROJECT_VERSION"                 
+                    }
+                }
+            }
+        }
 }
