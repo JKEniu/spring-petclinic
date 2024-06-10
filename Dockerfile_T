@@ -1,0 +1,2 @@
+FROM spring-petclinic AS builder
+RUN ./gradlew test
